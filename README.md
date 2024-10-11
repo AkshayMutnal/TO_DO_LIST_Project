@@ -1,4 +1,5 @@
-Instructions to run the project                                                                           
+Instructions to run the project                                                                                                  
+superusername:akshay  password:todoapp123                                                                                                                                 
 step 1: upload the folder in VS Code                                                                                                                                    
 step 2: type the command in terminal -- cd TODOProject                                                                                                                         
 step 3: to migrate the project -- python manage.py migrate  # or write -- py manage.py migrate                                                                                       
