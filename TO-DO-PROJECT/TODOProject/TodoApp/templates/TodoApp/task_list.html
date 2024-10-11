@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+        }
+
+        header {
+            width: 100%;
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        h1 {
+            color: #333;
+            margin-top: 60px; /* Space below the header */
+            margin-bottom: 20px;
+        }
+
+        a {
+            color: white;
+            text-decoration: none;
+            margin-left: 15px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .logout {
+            background: transparent;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            width: 100%;
+            max-width: 600px;
+            margin: 80px auto 0; /* Space for fixed header */
+        }
+
+        li {
+            padding: 15px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column; /* Stack elements vertically */
+        }
+
+        .task-info {
+            display: flex;
+            justify-content: space-between; /* Aligns the task info and buttons */
+            align-items: center;
+        }
+
+        .status {
+            font-weight: bold;
+            margin-top: 5px; /* Space above status */
+        }
+
+        .completed {
+            color: green;
+        }
+
+        .not-completed {
+            color: red;
+        }
+
+        form {
+            display: inline;
+        }
+
+        input[type="submit"] {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .edit-link {
+            color: green;
+            margin-left: 10px;
+        }
+
+        .delete-link {
+            color: red;
+            margin-left: 10px;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.5em;
+            }
+
+            li {
+                align-items: flex-start;
+            }
+
+            input[type="submit"] {
+                width: 100%;
+                margin-top: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <a href="{% url 'user_profile' %}">Profile</a>
+            <form action="{% url 'logout' %}" method="post" class="logout">
+                {% csrf_token %}
+                <button type="submit" class="logout">Logout</button>
+            </form>
+        </div>
+    </header>
+    <h1>My Tasks</h1>
+    <a href="{% url 'task_create' %}" style="color: green;">Add New Task</a>
+    <ul>
+        {% for task in tasks %}
+            <li>
+                <div class="task-info">
+                    <div>
+                        <strong>{{ task.name }}</strong><br>
+                        <span>{{ task.description }}</span>
+                    </div>
+                    <div>
+                        <a href="{% url 'task_update' task.pk %}" class="edit-link">Edit</a>
+                        <a href="{% url 'task_delete' task.pk %}" class="delete-link">Delete</a>
+                    </div>
+                </div>
+                <div class="status">
+                    {% if task.completed %}
+                        <span class="completed">(Completed)</span>
+                    {% else %}
+                        <span class="not-completed">(Not Completed)</span>
+                        <form action="{% url 'task_update' task.pk %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="completed" value="True">
+                            <input type="submit" value="update">
+                        </form>
+                    {% endif %}
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

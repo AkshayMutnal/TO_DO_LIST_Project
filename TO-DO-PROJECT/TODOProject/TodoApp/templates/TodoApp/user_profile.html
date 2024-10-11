@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ user.username }}'s Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 90%;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            opacity: 0.95; /* Slight transparency */
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #007bff; /* Primary color for headings */
+            margin-bottom: 10px;
+        }
+
+        ul {
+            list-style-type: none; /* Remove bullet points */
+            padding: 0;
+        }
+
+        li {
+            padding: 10px;
+            border-bottom: 1px solid #ccc; /* Divider between tasks */
+            display: flex;
+            justify-content: space-between; /* Space between task name and actions */
+            align-items: center;
+        }
+
+        li:last-child {
+            border-bottom: none; /* Remove border from last item */
+        }
+
+        a {
+            color: #007bff; /* Link color */
+            text-decoration: none;
+            margin-left: 10px; /* Space between text and links */
+        }
+
+        a:hover {
+            text-decoration: underline; /* Underline on hover */
+        }
+
+        /* Responsive styles */
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px; /* Reduce padding on smaller screens */
+            }
+
+            h1, h2 {
+                font-size: 1.5em; /* Adjust heading size */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ user.username }}'s Profile</h1>
+        <h2>Your Tasks:</h2>
+        <ul>
+            {% for task in tasks %}
+                <li>
+                    <strong>{{ task.name }}</strong>: {{ task.description }}
+                    <span>
+                        <a href="{% url 'task_update' task.pk %}">Edit</a>
+                        <a href="{% url 'task_delete' task.pk %}">Delete</a>
+                    </span>
+                </li>
+            {% empty %}
+                <li>No tasks available.</li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'task_list' %}">Back to Task List</a>
+    </div>
+</body>
+</html>
